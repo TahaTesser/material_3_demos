@@ -18,22 +18,14 @@ class PlantsApp extends StatelessWidget {
       themeMode: ThemeMode.light,
       theme: ThemeData(
         useMaterial3: true,
+        brightness: Brightness.light,
+        colorSchemeSeed: Colors.green[700],
       ),
       darkTheme: ThemeData(
         useMaterial3: true,
         brightness: Brightness.dark,
         colorSchemeSeed: Colors.green[700],
       ),
-      // theme: ThemeData(
-      //   useMaterial3: true,
-      //   brightness: Brightness.light,
-      //   colorSchemeSeed: Colors.green[700],
-      // ),
-      // darkTheme: ThemeData(
-      //   useMaterial3: true,
-      //   brightness: Brightness.dark,
-      //   colorSchemeSeed: Colors.green[700],
-      // ),
       home: const PlantsHome(),
     );
   }
@@ -106,6 +98,12 @@ class PlantsHome extends StatelessWidget {
         title: const Text('Plants Shop'),
         scrolledUnderElevation: 4.0,
         shadowColor: Theme.of(context).shadowColor,
+        leading: const Center(
+          child: CircleAvatar(
+            radius: 16,
+            child: Icon(Icons.person),
+          ),
+        ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(64.0),
           child: Container(
@@ -185,8 +183,8 @@ class PlantsHome extends StatelessWidget {
             label: 'Favorites',
           ),
           NavigationDestination(
-            icon: Icon(Icons.account_circle_rounded),
-            label: 'Profile',
+            icon: Icon(Icons.payment_rounded),
+            label: 'Payments',
           ),
         ],
         selectedIndex: 0,
@@ -206,6 +204,9 @@ class PlantItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData themeData = Theme.of(context);
+    final TextTheme textTheme = themeData.textTheme;
+
     return Hero(
       tag: image,
       child: Container(
@@ -228,11 +229,11 @@ class PlantItem extends StatelessWidget {
             children: <Widget>[
               Text(
                 'Lorem Ipsum',
-                style: Theme.of(context).textTheme.subtitle1,
+                style: textTheme.subtitle1,
               ),
               Text(
                 '\$9.99',
-                style: Theme.of(context).textTheme.caption,
+                style: textTheme.caption,
               ),
             ],
           ),
@@ -249,6 +250,9 @@ class PlantDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData themeData = Theme.of(context);
+    final TextTheme textTheme = themeData.textTheme;
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -266,81 +270,91 @@ class PlantDetailsPage extends StatelessWidget {
                     fit: BoxFit.contain,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Lorem Ipsum',
-                            style: Theme.of(context).textTheme.headline6,
-                          ),
-                          Text(
-                            '\$9.99',
-                            style: Theme.of(context).textTheme.subtitle1,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      OverflowBar(
-                        alignment: MainAxisAlignment.start,
-                        spacing: 10,
-                        children: <Widget>[
-                          ActionChip(
-                            onPressed: () {},
-                            label: const Text('Indoor'),
-                          ),
-                          ActionChip(
-                            onPressed: () {},
-                            label: const Text('Norishing'),
-                          ),
-                          ActionChip(
-                            onPressed: () {},
-                            label: const Text('Small'),
-                          ),
-                          ActionChip(
-                            onPressed: () {},
-                            label: const Text('Elegant'),
-                          ),
-                        ],
-                      ),
-                    ],
+                MaterialBanner(
+                  content: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Lorem Ipsum',
+                          style: textTheme.headline6,
+                        ),
+                        Text(
+                          '\$9.99',
+                          style: textTheme.subtitle1,
+                        ),
+                      ],
+                    ),
                   ),
+                  actions: [
+                    ActionChip(
+                      onPressed: () {},
+                      label: const Text('Indoor'),
+                    ),
+                    ActionChip(
+                      onPressed: () {},
+                      label: const Text('Small'),
+                    ),
+                  ],
                 )
               ],
             ),
           ),
         ],
       ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            const SizedBox(width: 10),
-            Expanded(
-              child: Row(
-                children: [
-                  const Text('Include pot'),
-                  Switch(
-                    value: true,
-                    onChanged: (value) {},
-                  ),
-                ],
+     bottomNavigationBar: BottomAppBar(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              OutlinedButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.favorite_outline_rounded),
+                label: const Text('Save'),
               ),
-            ),
-            const Text('Gift'),
-            Checkbox(
-              value: true,
-              onChanged: (bool? value) {},
-            ),
-            FilledButton(
-              onPressed: () {},
-              child: const Text('Buy Now'),
-            ),
-            const SizedBox(width: 10),
-          ],
+              FilledButton(
+                onPressed: () {
+                  showModalBottomSheet<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return SizedBox(
+                        height: 200,
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              ListTile(
+                                title: const Text('Include base'),
+                                trailing: Switch(
+                                  onChanged: (value) {},
+                                  value: true,
+                                ),
+                              ),
+                              ListTile(
+                                title: const Text('Gifting'),
+                                trailing: Checkbox(
+                                  onChanged: (value) {},
+                                  value: true,
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {},
+                                child: const Text('Proceed to payment'),
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: const Text('Buy Now'),
+              ),
+            ],
+          ),
         ),
       ),
     );
